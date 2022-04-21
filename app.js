@@ -1,14 +1,16 @@
-const color = require("colors");
+require("colors");
 
 const Tareas = require("./models/tareas");
+const { guardarDB, leerDB } = require("./helpers/guardarArchivo");
+const { inquirerMenu, pause, leerInput } = require("./helpers/inquirer");
 
-const { inquirerMenu, pause, leerInput} = require("./helpers/inquirer");
 console.clear();
 
 const main = async () => {
-  // console.log("hola mundo");
   let opt = "";
+
   const tareas = new Tareas();
+  tareas.cargarTareas(leerDB());
 
   do {
     opt = await inquirerMenu();
@@ -24,12 +26,12 @@ const main = async () => {
 
     switch (opt) {
       case "1":
-        const {desc} = await leerInput('descripcion')
-        tareas.crearTarea(desc)
+        const { desc } = await leerInput("descripcion");
+        tareas.crearTarea(desc);
         break;
 
       case "2":
-        console.log(tareas._listado)
+        tareas.listadoCompleto();
         break;
 
       case "3":
@@ -41,6 +43,8 @@ const main = async () => {
       case "5":
         break;
     }
+
+    guardarDB(tareas.listadoArr);
 
     await pause();
   } while (opt !== "0");
