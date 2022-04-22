@@ -31,13 +31,15 @@ const main = async () => {
         break;
 
       case "2":
-        tareas.listadoCompleto();
+        tareas.listarTareas()
         break;
 
       case "3":
+        tareas.listarTareas(true)
         break;
 
       case "4":
+        tareas.listarTareas(false)
         break;
 
       case "5":

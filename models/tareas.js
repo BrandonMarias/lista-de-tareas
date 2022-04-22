@@ -51,6 +51,30 @@ class Tareas {
       console.log(`${idx} ${description} :: ${estado}`);
     });
   }
+
+
+  listarTareas( completadas = null){
+
+    
+    this.listadoArr.forEach((tarea, i) => {
+      const idx = `${i + 1}.`.green;
+      const { description, completadoEn } = tarea;
+      const estado = completadoEn ? `completada`.green : `incompleta`.red;
+        
+        if (completadas === null) {//regresa listado completo
+          console.log(`${idx} ${description} :: ${estado}`);
+          
+        }
+        else if (completadas && completadoEn) {// regresa listado de completadas
+          console.log(`${idx} ${description} :: ${estado}`);
+        }
+        else if (!completadas && !completadoEn) {// regresa estado de incompletas
+          console.log(`${idx} ${description} :: ${estado}`);
+        }
+    });
+    
+  }
+
 }
 
 module.exports = Tareas;
