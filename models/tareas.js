@@ -14,7 +14,7 @@ class Tareas {
 
   cargarTareas(tareas = []) {
     if (tareas) {
-      console.log(tareas);
+      // console.log(tareas);
       tareas.forEach((tarea) => {
         this._listado[tarea.id] = tarea;
       });
@@ -30,6 +30,36 @@ class Tareas {
     });
 
     return listado;
+  }
+  
+  listarTareas(completadas = null) {
+    let idx = 1;
+
+    this.listadoArr.forEach(tarea => {
+      const { description, completadoEn } = tarea;
+      const estado = completadoEn ? `completada`.green : `incompleta`.red;
+
+      if (completadas === null) {
+        //regresa listado completo
+        console.log(`${idx}. ${description} :: ${estado}`);
+        idx++;
+      } else if (completadas && completadoEn) {
+        // regresa listado de completadas
+        console.log(`${idx}. ${description} :: ${estado}`);
+        idx++;
+      } else if (!completadas && !completadoEn) {
+        // regresa estado de incompletas
+        console.log(`${idx}. ${description} :: ${estado}`);
+        idx++;
+      }
+    });
+
+  }
+  
+  eliminarTarea (tarea = '') {
+    if (this._listado[id]) {
+      delete this._listado[id]
+    }
   }
 
   // listadoCompleto() {
@@ -52,28 +82,6 @@ class Tareas {
   //   });
   // }
 
-  listarTareas(completadas = null) {
-    let idx = 1;
-
-    this.listadoArr.forEach(tarea => {
-      const { description, completadoEn } = tarea;
-      const estado = completadoEn ? `completada`.green : `incompleta`.red;
-
-      if (completadas === null) {
-        //regresa listado completo
-        console.log(`${idx}. ${description} :: ${estado}`);
-        idx++;
-      } else if (completadas && completadoEn) {
-        // regresa listado de completadas
-        console.log(`${idx}. ${description} :: ${estado}`);
-        idx++;
-      } else if (!completadas && !completadoEn) {
-        // regresa estado de incompletas
-        console.log(`${idx}. ${description} :: ${estado}`);
-        idx++;
-      }
-    });
-  }
 }
 
 module.exports = Tareas;

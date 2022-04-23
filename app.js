@@ -2,7 +2,12 @@ require("colors");
 
 const Tareas = require("./models/tareas");
 const { guardarDB, leerDB } = require("./helpers/guardarArchivo");
-const { inquirerMenu, pause, leerInput } = require("./helpers/inquirer");
+const {
+  inquirerMenu,
+  pause,
+  leerInput,
+  listaBorrar,
+} = require("./helpers/inquirer");
 
 console.clear();
 
@@ -31,18 +36,22 @@ const main = async () => {
         break;
 
       case "2":
-        tareas.listarTareas()
+        tareas.listarTareas();
         break;
 
       case "3":
-        tareas.listarTareas(true)
+        tareas.listarTareas(true);
         break;
 
       case "4":
-        tareas.listarTareas(false)
+        tareas.listarTareas(false);
         break;
 
       case "5":
+        break;
+
+      case "6":
+        await listaBorrar(tareas.listadoArr);
         break;
     }
 
