@@ -7,6 +7,8 @@ const {
   pause,
   leerInput,
   listaBorrar,
+  confirmar,
+  listaCompletar
 } = require("./helpers/inquirer");
 
 console.clear();
@@ -19,15 +21,6 @@ const main = async () => {
 
   do {
     opt = await inquirerMenu();
-
-    // console.log({ opt });
-
-    // const tarea = new Tarea("comprar comida");
-    // const tareas = new Tareas();
-
-    // tareas._listado[tarea.id] = tarea;
-
-    // console.log(tareas);
 
     switch (opt) {
       case "1":
@@ -48,10 +41,17 @@ const main = async () => {
         break;
 
       case "5":
+        const ids = await listaCompletar(tareas.listadoArr)
+        console.log(ids)
         break;
 
       case "6":
-        await listaBorrar(tareas.listadoArr);
+        const tareaABorrra = await listaBorrar(tareas.listadoArr);
+        if (tareaABorrra == "0") break;
+
+        const { ok } = await confirmar("¿Estas Seguro?");
+        if (ok) tareas.eliminarTarea(tareaABorrra);
+
         break;
     }
 
