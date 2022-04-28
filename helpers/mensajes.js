@@ -37,8 +37,8 @@ const pausa = () => {
     });
 
     readLine.question(`\nPresione ${"ENTER\n".green}`, (opt) => {
-        readLine.close();
-        resolve();
+      readLine.close();
+      resolve();
     });
   });
 };

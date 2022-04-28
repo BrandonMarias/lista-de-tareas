@@ -5,12 +5,11 @@ class Tarea {
   description = "";
   completadoEn = null;
 
-  constructor(description = '') {
+  constructor(description = "") {
     this.description = description;
     this.id = uuidv4();
-    this.compleatdoEn = null;
+    this.completadoEn = null;
   }
-
 }
 
 module.exports = Tarea;

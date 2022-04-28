@@ -30,11 +30,11 @@ class Tareas {
 
     return listado;
   }
-  
+
   listarTareas(completadas = null) {
     let idx = 1;
 
-    this.listadoArr.forEach(tarea => {
+    this.listadoArr.forEach((tarea) => {
       const { description, completadoEn } = tarea;
       const estado = completadoEn ? `completada`.green : `incompleta`.red;
 
@@ -44,7 +44,7 @@ class Tareas {
         idx++;
       } else if (completadas && completadoEn) {
         // regresa listado de completadas
-        console.log(`${idx}. ${description} :: ${estado}`);
+        console.log(`${idx}. ${description} :: ${completadoEn.green}`);
         idx++;
       } else if (!completadas && !completadoEn) {
         // regresa estado de incompletas
@@ -52,16 +52,34 @@ class Tareas {
         idx++;
       }
     });
-
   }
-  
-  eliminarTarea (id) {
+
+  eliminarTarea(id) {
     if (this._listado[id]) {
-      delete this._listado[id]
+      delete this._listado[id];
     }
   }
 
+  editarTarea(id, desc = "sol") {
+    if (this._listado[id]) {
+      this._listado[id].description = desc;
+      console.log("tarea editada");
+    }
+  }
 
+  completarTarea(ids = []) {
+    ids.forEach((id) => {
+      if (!this._listado[id].completadoEn) {
+        this._listado[id].completadoEn = new Date().toISOString();
+      }
+    });
+
+    this.listadoArr.forEach((tarea) => {
+      if (!ids.includes(tarea.id)) {
+        this._listado[tarea.id].completadoEn = null;
+      }
+    });
+  }
 }
 
 module.exports = Tareas;

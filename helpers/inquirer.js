@@ -1,41 +1,34 @@
 const inquirer = require("inquirer");
 require("colors");
 
+const arrayPreguntas = [
+  "Crear tarea",
+  "Listar tareas",
+  "Listar tareas completadas",
+  "Listar tareas pendinetes",
+  "Completar tarea(s)",
+  "Eliminar tarea",
+  "Editar tarea",
+];
+
+const listaDePreguntas = arrayPreguntas.map((prgunta, i) => {
+  return {
+    value: `${i + 1}`,
+    name: `${`${i + 1}.`.green} ${prgunta}`,
+  };
+});
+
+listaDePreguntas.push({
+  value: "0",
+  name: `${"0.".green} Salir y Guardar`,
+});
+
 const preguntas = [
   {
     type: "list",
     name: "opcion",
     message: "¿qué desea hacer?",
-    choices: [
-      {
-        value: "1",
-        name: `${"1.".green} Crear tarea`,
-      },
-      {
-        value: "2",
-        name: `${"2.".green} Listar tarea`,
-      },
-      {
-        value: "3",
-        name: `${"3.".green} Listar tareas completadas`,
-      },
-      {
-        value: "4",
-        name: `${"4.".green} Listar tareas pendientes`,
-      },
-      {
-        value: "5",
-        name: `${"5.".green} Completar tarea(s)`,
-      },
-      {
-        value: "6",
-        name: `${"6.".green} Eliminar tarea`,
-      },
-      {
-        value: "0",
-        name: `${"0.".green} Salir`,
-      },
-    ],
+    choices: listaDePreguntas,
   },
 ];
 
@@ -47,7 +40,7 @@ const inquirerMenu = async () => {
   const { opcion } = await inquirer.prompt(preguntas);
   return opcion;
 };
-
+////////////////////////////////////////////////////////////////
 const pause = async () => {
   console.log(`\n`);
   return await inquirer.prompt({
@@ -56,7 +49,7 @@ const pause = async () => {
     message: `presione ${"ENTER".green} para continuar`,
   });
 };
-
+///////////////////////////////////////////////////////////////
 const leerInput = async (message) => {
   return await inquirer.prompt({
     type: "input",
@@ -70,15 +63,25 @@ const leerInput = async (message) => {
     },
   });
 };
-
-const listaBorrar = async (tareas = []) => {
-  const choices = tareas.map((tarea, i) => {
+//////////////////////////////////////////////////////////////////
+const elegirTarea = (tareas, conChecked = false) => {
+  return tareas.map((tarea, i) => {
+    if (conChecked) {
+      return {
+        value: tarea.id,
+        name: `${`${i + 1}.`.green} ${tarea.description}`,
+        checked: tarea.completadoEn ? true : false,
+      };
+    }
     return {
       value: tarea.id,
       name: `${`${i + 1}.`.green} ${tarea.description}`,
     };
   });
+};
 
+const selecionarTarea = async (tareas = [], message = "") => {
+  const choices = elegirTarea(tareas);
   choices.unshift({
     value: "0",
     name: `${"0.".green} Cancelar`,
@@ -88,7 +91,7 @@ const listaBorrar = async (tareas = []) => {
     {
       type: "list",
       name: "id",
-      message: "Borrar",
+      message,
       choices,
     },
   ];
@@ -105,14 +108,7 @@ const confirmar = async (message) => {
 };
 
 const listaCompletar = async (tareas = []) => {
-  const choices = tareas.map((tarea, i) => {
-    return {
-      value: tarea.id,
-      name: `${`${i + 1}.`.green} ${tarea.description}`,
-      checked: true
-    };
-  });
-
+  const choices = elegirTarea(tareas, true);
 
   const preguntas = [
     {
@@ -130,7 +126,7 @@ module.exports = {
   inquirerMenu,
   pause,
   leerInput,
-  listaBorrar,
+  selecionarTarea,
   confirmar,
   listaCompletar,
 };
